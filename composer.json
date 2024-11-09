@@ -1,0 +1,24 @@
+{
+    "name": "devgfnl/pagbank-magento-graph-ql",
+    "version": "1.0.0",
+    "description": "N/A",
+    "type": "magento2-module",
+    "authors": [
+        {
+            "name": "Gabriel Lima",
+            "email": "gabriel.lima@devgfnl.com"
+        }
+    ],
+    "require": {
+        "pagbank/payment-magento": "*",
+        "magento/framework": "*"
+    },
+    "autoload": {
+        "files": [
+            "registration.php"
+        ],
+        "psr-4": {
+            "Devgfnl\\PagBankPaymentMethodGraphQl\\": ""
+        }
+    }
+}

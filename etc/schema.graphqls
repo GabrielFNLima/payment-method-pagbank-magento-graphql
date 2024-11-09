@@ -1,0 +1,158 @@
+type Query {
+    pagBankOrderSuccess(
+        input: PagBankOrderSuccessInput
+    ): PagBankOrderSuccessOutput
+        @resolver(
+            class: "\\Devgfnl\\PagBankGraphQl\\Model\\Resolver\\PagBankPixOrderSuccess"
+        )
+        @doc(
+            description: "Fetches the success status and details for a PagBank order based on the provided input."
+        )
+
+    pagBankListInstallments(
+        cart_id: String!
+        credit_card_bin: String!
+    ): [PagBankListInstallmentsOutput]
+        @resolver(
+            class: "\\Devgfnl\\PagBankGraphQl\\Model\\Resolver\\PagBankListInstallments"
+        )
+        @doc(
+            description: "Retrieves a list of installment options for the given cart ID and credit card BIN."
+        )
+}
+
+input PagBankListInstallmentsInput {
+    cart_id: String! @doc(description: "Unique identifier of the cart.")
+    credit_card_bin: String!
+        @doc(
+            description: "The BIN (Bank Identification Number) of the credit card."
+        )
+}
+
+type PagBankListInstallmentsOutput {
+    value: Int @doc(description: "Installment value.")
+    label: String @doc(description: "Label for displaying installment option.")
+}
+
+input PaymentMethodInput {
+    pagbank_paymentmagento_pix: PagBankPayerInput
+        @doc(description: "Input for Pix payment method.")
+    pagbank_paymentmagento_cc: PagBankCcInput
+        @doc(description: "Input for credit card payment method.")
+}
+
+type Cart {
+    pagbank_interest_amount: PagBankInterestOutput
+        @resolver(
+            class: "\\Devgfnl\\PagBankGraphQl\\Model\\Resolver\\PagBankInterest"
+        )
+        @doc(
+            description: "Interest amount associated with PagBank for the cart."
+        )
+}
+
+type PagBankInterestOutput {
+    value: String @doc(description: "Interest value.")
+    currency: String @doc(description: "Currency code of the interest value.")
+}
+
+input PagBankPayerInput {
+    payer_name: String @doc(description: "Name on the Pix payment form.")
+    payer_tax_id: String
+        @doc(description: "Tax ID (CPF or CNPJ) on the Pix payment form.")
+    payer_phone: String
+        @doc(description: "Phone number on the Pix payment form.")
+}
+
+input PagBankCcInput {
+    cc_number_token: String @doc(description: "Tokenized credit card number.")
+    cc_installments: String @doc(description: "Selected installment option.")
+    card_type_transaction: String
+        @doc(description: "Type of credit card transaction.")
+    three_ds_session: String @doc(description: "3DS session data.")
+    three_ds_auth: String @doc(description: "3DS authentication data.")
+    three_ds_auth_status: String
+        @doc(description: "Status of 3DS authentication.")
+    payer_tax_id: String
+        @doc(description: "Tax ID (CPF or CNPJ) of the credit card payer.")
+    payer_phone: String
+        @doc(description: "Phone number of the credit card payer.")
+}
+
+type StoreConfig {
+    pagbank_public_key: String
+        @resolver(
+            class: "\\Devgfnl\\PagBankGraphQl\\Model\\Resolver\\PagBankPublicKey"
+        )
+        @doc(description: "Public key for PagBank transactions.")
+    pagbank_paymentmagento_pix_payer_name: Boolean
+        @doc(description: "Indicates if Pix payer name is required.")
+    pagbank_paymentmagento_pix_payer_taxid: Boolean
+        @doc(description: "Indicates if Pix payer tax ID is required.")
+    pagbank_paymentmagento_pix_payer_phone: Boolean
+        @doc(description: "Indicates if Pix payer phone number is required.")
+    pagbank_paymentmagento_pix_expiration: String
+        @doc(description: "Expiration time for Pix payments.")
+    pagbank_paymentmagento_pix_instruction_checkout: String
+        @doc(description: "Instructions displayed at checkout for Pix payment.")
+    pagbank_paymentmagento_cc_payer_taxid: Boolean
+        @doc(description: "Indicates if credit card payer tax ID is required.")
+    pagbank_paymentmagento_cc_payer_phone: Boolean
+        @doc(
+            description: "Indicates if credit card payer phone number is required."
+        )
+    pagbank_paymentmagento_cc_max_installment: String
+        @doc(
+            description: "Maximum number of installments allowed for credit cards."
+        )
+    pagbank_paymentmagento_cc_types_available: String
+        @doc(description: "Available credit card types for selection.")
+    pagbank_paymentmagento_cc_months_years: PagBankMonthsYearsOutput
+        @resolver(
+            class: "\\Devgfnl\\PagBankGraphQl\\Model\\Resolver\\PagBankMonthsYears"
+        )
+        @doc(
+            description: "List of available months and years for expiration dates."
+        )
+}
+
+input PagBankOrderSuccessInput {
+    orderId: String!
+        @doc(description: "Order ID for which to retrieve the success details.")
+}
+
+type PagBankMonthsYearsOutput {
+    months: String @doc(description: "Months available for expiration.")
+    years: String @doc(description: "Years available for expiration.")
+}
+
+type PagBankOrderSuccessOutput {
+    pagbank_paymentmagento_pix: PagBankPixOrderSuccessOutput
+        @doc(description: "Pix payment success details.")
+}
+type PagBankPixOrderSuccessOutput {
+    title: String @doc(description: "Title of the Pix payment confirmation.")
+    code: String @doc(description: "Code associated with the Pix payment.")
+    qr_code: String @doc(description: "QR code data for Pix payment.")
+    qr_code_image: String
+        @doc(description: "URL for the QR code image for Pix payment.")
+    expiration_date: String
+        @doc(description: "Expiration date of the Pix payment.")
+    payer_name: String @doc(description: "Name of the payer for Pix payment.")
+    payer_tax_id: String
+        @doc(description: "Tax ID (CPF or CNPJ) of the payer for Pix payment.")
+}
+
+type Mutation {
+    pagBankCcApplyInstallments(
+        cart_id: String!
+        credit_card_bin: String!
+        installment_selected: Int!
+    ): Boolean
+        @resolver(
+            class: "\\Devgfnl\\PagBankGraphQl\\Model\\Resolver\\PagBankCcApplyInstallments"
+        )
+        @doc(
+            description: "Applies the selected installment option to the specified cart and credit card."
+        )
+}

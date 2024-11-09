@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <type name="Magento\QuoteGraphQl\Model\Cart\Payment\AdditionalDataProviderPool">
+        <arguments>
+            <argument name="dataProviders" xsi:type="array">
+                <item name="pagbank_paymentmagento_pix" xsi:type="object">Devgfnl\PagBankGraphQl\Model\AdditionalData\PixDataProvider</item>
+                <item name="pagbank_paymentmagento_cc" xsi:type="object">Devgfnl\PagBankGraphQl\Model\AdditionalData\CcDataProvider</item>
+            </argument>
+        </arguments>
+    </type>
+
+    <type name="Magento\StoreGraphQl\Model\Resolver\Store\StoreConfigDataProvider">
+        <arguments>
+            <argument name="extendedConfigData" xsi:type="array">
+                <item name="pagbank_paymentmagento_pix_payer_name" xsi:type="string">payment/pagbank_paymentmagento_pix/get_name</item>
+                <item name="pagbank_paymentmagento_pix_payer_taxid" xsi:type="string">payment/pagbank_paymentmagento_pix/get_tax_id</item>
+                <item name="pagbank_paymentmagento_pix_payer_phone" xsi:type="string">payment/pagbank_paymentmagento_pix/get_phone</item>
+                <item name="pagbank_paymentmagento_pix_expiration" xsi:type="string">payment/pagbank_paymentmagento_pix/expiration</item>
+                <item name="pagbank_paymentmagento_pix_instruction_checkout" xsi:type="string">payment/pagbank_paymentmagento_pix/instruction_checkout</item>
+                <item name="pagbank_paymentmagento_cc_payer_taxid" xsi:type="string">payment/pagbank_paymentmagento_cc/get_tax_id</item>
+                <item name="pagbank_paymentmagento_cc_payer_phone" xsi:type="string">payment/pagbank_paymentmagento_cc/get_phone</item>
+                <item name="pagbank_paymentmagento_cc_max_installment" xsi:type="string">payment/pagbank_paymentmagento_cc/max_installment</item>
+                <item name="pagbank_paymentmagento_cc_types_available" xsi:type="string">payment/pagbank_paymentmagento_cc/cctypes</item>
+            </argument>
+        </arguments>
+    </type>
+</config>
